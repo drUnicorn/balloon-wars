@@ -1,0 +1,5 @@
+{
+ "controlMode": "manual",
+ "cameraMinTilt": -90,
+ "cameraMaxTilt":  90
+}

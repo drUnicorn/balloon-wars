@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset=utf-8 />
+  <style>
+   html,body{
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+   }
+   #left,#right{
+    height: 100%;
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    
+    float: left;
+   }
+   #right{
+    float: right;
+   }
+   #ad{
+    display: none;
+   }
+  </style>
+ </head>
+ <body>
+  <iframe id=left  src=http://michal.grno.cz/map></iframe>
+  <iframe id=right src=http://michal.grno.cz/physi.js/examples/move.html></iframe>
+  <div id=ad><endora></div>
+  
+  <script>
+   var left  = document.getElementById('left' );
+   var right = document.getElementById('right');
+   setInterval(
+    function(){
+     right.contentWindow.camera.position.set(-7, 35, 0);
+     right.contentWindow.camera.rotation.set(
+      left.contentWindow.camera.rotation._x,
+      left.contentWindow.camera.rotation._y,
+      left.contentWindow.camera.rotation._z
+     );
+    },
+    20
+   );
+   
+   left.contentWindow.addEventListener('load',function(){
+    left.contentDocument.getElementById('infoPanel').style.display = 'none';
+   });
+  </script>
+ </body>
+</html>
