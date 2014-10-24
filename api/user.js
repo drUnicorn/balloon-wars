@@ -1,9 +1,10 @@
-window.addEventListener('load', function(){
-                    
+window.addEventListener('load',function(){
+document.body.addEventListener('click', function(){
+
 document.body.requestFullscreen =
  document.body.requestFullscreen ||
  document.body.msRequestFullscreen ||
- document.body.mozRequestFullscreen ||
+ document.body.mozRequestFullScreen ||
  document.body.webkitRequestFullscreen;
  
 document.body.requestFullscreen();
@@ -16,12 +17,34 @@ document.body.requestPointerLock =
  
 document.body.requestPointerLock();
 
+var factor = 1/100;
+var prevX, prevY;
 document.addEventListener('mousemove',function(e){
- camera.rotation.set(
-  camera.rotation.x + e.movementY,
-  camera.rotation.y + e.movementX,
-  camera.rotation.z 
- );
-})
+ 
+ if(prevX != undefined && prevY != undefined){
+  var Δx = prevX - e.clientX
+           || -e.movementX
+           || -e.mozMovementX
+           || -e.webkitMovementX;
+  
+  var Δy = e.clientY - prevY
+           || e.movementY
+           || e.mozMovementY
+           || e.webkitMovementY;
+  
+  Δx = Δx|0||0;
+  Δy = Δy|0||0;
+  
+  camera.rotation.set(
+   camera.rotation.x + factor * Δy, //Yaw
+   camera.rotation.y + factor * Δx, //Pitch
+   camera.rotation.z //Roll - buggy, ¡no toques!
+  );
+ }
+ 
+ prevX = e.clientX;
+ prevY = e.clientY;
+});
 
+});
 });
