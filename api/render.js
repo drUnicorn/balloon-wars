@@ -38,6 +38,8 @@ initScene = function() {
   1,
   1000
  );
+ camera.positoin.set( -458133, 261, 5548731 );
+ camera.rotation.set( 3.787364476827695, -4.2062434973063345, 3.141592653589793 );
  scene.add( camera );
  
  
@@ -72,7 +74,7 @@ render = function() {
  requestAnimationFrame( render );
  renderer.render( scene, camera );
  if(browser&&browser.getPosition()[0]){
-  browser.cameraCopyTo( camera );
+  browser.cameraCopyFrom( camera );
  }
  
 };
