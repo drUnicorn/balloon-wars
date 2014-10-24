@@ -1,4 +1,4 @@
-(function(){
+window.addEventListener('load', function(){
                     
 document.body.requestFullscreen =
  document.body.requestFullscreen ||
@@ -24,4 +24,4 @@ document.addEventListener('mousemove',function(e){
  );
 })
 
-})();
+});
