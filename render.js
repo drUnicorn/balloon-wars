@@ -1,7 +1,7 @@
 
 
-Physijs.scripts.worker = window.location+'/api/physijs_worker.js';
-Physijs.scripts.ammo = window.location+'/api/ammo.js';
+Physijs.scripts.worker = window.location+'lib/physijs_worker.js';
+Physijs.scripts.ammo = window.location+'lib/ammo.js';
 
 
 
@@ -15,10 +15,17 @@ initScene = function() {
  
  //Nastav renderovací jádro, alpha znamená průhledné pozadí
  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
- renderer.setSize( window.innerWidth, window.innerHeight );
+ renderer.setSize( document.body.clientWidth, document.body.clientHeight );
  renderer.shadowMapEnabled = true;
  renderer.shadowMapSoft = true;
  document.getElementById( 'canvas' ).appendChild( renderer.domElement );
+ 
+ window.addEventListener('resize',function(){
+  renderer.setSize(
+   document.body.clientWidth,
+   document.body.clientHeight
+  );
+ });
  
  //Vytvoř scénu
  scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
@@ -64,8 +71,46 @@ initScene = function() {
  requestAnimationFrame( render );
  scene.simulate();
  
- //Vytvoř krychli
- createShape();
+ 
+ //Načti balón
+ (new THREE.JSONLoader()).load(
+  "models/balloon.js",
+  function(geometry){
+  
+  var material = new THREE.MeshLambertMaterial({ opacity: 1, transparent: true });
+  
+  var balloon = new THREE.Mesh(
+    geometry,
+    material
+  );
+  
+  
+  //Náhodně vyber barvu
+  balloon.material.color.setRGB(
+     Math.random(),
+     Math.random(),
+     Math.random()
+  );
+  
+  balloon.castShadow = true;    //Balón vytváří stín
+  balloon.receiveShadow = true; //A může na něj dopadat stín
+  
+  //Skutečný balón je o trochu větší, než model...
+  balloon.scale.x = balloon.scale.y = balloon.scale.z = 5;
+  
+  //Nastav pozici
+  balloon.position.set(
+   -458133.9720997899, //UTM šířka
+   261,                //nadmořská výška
+   5548777.776496544   //UTM délka
+  );
+  
+  
+  
+  
+  
+  scene.add( balloon );
+ });
 };
 
 
@@ -78,51 +123,5 @@ render = function() {
  }
  
 };
-
-
-//Geometrie a materiál krychle
-var box_geometry = new THREE.BoxGeometry( 3, 3, 3 );
-var material = new THREE.MeshLambertMaterial({ opacity: 0, transparent: true });
-
-
- createShape = function() {
-  
-  //Vytvoř krychli z geometrie a materiálu
-  shape = new Physijs.BoxMesh(
-     box_geometry,
-     material
-  );
-  
-  
-  //Náhodně vyber barvu
-  shape.material.color.setRGB( Math.random() * 100 / 100, Math.random() * 100 / 100, Math.random() * 100 / 100 );
-  
-  shape.castShadow = true;    //Krychle vytváří stín
-  shape.receiveShadow = true; //A může na ni dopadat stín
-  
-  
-  //Nastav pozici
-  shape.position.set(
-   -458133.9720997899, //UTM šířka
-   261,                //nadmořská výška
-   5548777.776496544   //UTM délka
-  );
-  
-  
-  //Nastav náhodnou rotaci
-  shape.rotation.set(
-   Math.random() * Math.PI,
-   Math.random() * Math.PI,
-   Math.random() * Math.PI
-  );
-  
-  
-  scene.add( shape ); //Vlož krychli do scény
-  
-  
-  //Animace do neprůhlednosti
-  new TWEEN.Tween(shape.material).to({opacity: 1}, 500).start();
-  
- };
 
 window.addEventListener('load',initScene);
