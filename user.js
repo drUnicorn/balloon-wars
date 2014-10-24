@@ -17,6 +17,10 @@ document.body.requestPointerLock =
  
 document.body.requestPointerLock();
 
+var lim = function(n, min, max){
+ return n<min ? min : ( n>max ? max : n );
+};
+
 var factor = 1/100;
 var prevX, prevY;
 document.addEventListener('mousemove',function(e){
@@ -35,9 +39,12 @@ document.addEventListener('mousemove',function(e){
   Δx = Δx|0||0;
   Δy = Δy|0||0;
   
+  var min = Math.PI/2;
+  var max = Math.PI+min;
+  
   camera.rotation.set(
-   camera.rotation.x + factor * Δy, //Yaw
-   camera.rotation.y + factor * Δx, //Pitch
+   lim( camera.rotation.x + factor * Δy, min, max ), //Yaw
+   camera.rotation.y + factor * Δx,                  //Pitch
    camera.rotation.z //Roll - buggy, ¡no toques!
   );
  }
