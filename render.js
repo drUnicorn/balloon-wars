@@ -6,7 +6,7 @@ Physijs.scripts.ammo = window.location+'lib/ammo.js';
 
 
 var initScene, render, createShape, NoiseGen,
- renderer, scene, light, camera, shape;
+ renderer, scene, light, camera, shape, balloon;
 
 initScene = function() {
  
@@ -45,7 +45,7 @@ initScene = function() {
   1,
   1000
  );
- camera.position.set( -458133, 261, 5548731 );
+ camera.position.set( -458133.9720997899, 243, 5548777.776496544 );
  camera.rotation.set( 3.787364476827695, -4.2062434973063345, 3.141592653589793 );
  scene.add( camera );
  
@@ -79,7 +79,7 @@ initScene = function() {
   
   var material = new THREE.MeshLambertMaterial({ opacity: 1, transparent: true });
   
-  var balloon = new THREE.Mesh(
+  balloon = new THREE.Mesh(
     geometry,
     material
   );
