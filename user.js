@@ -57,12 +57,13 @@ document.addEventListener('mousemove',function(e){
 
 document.body.addEventListener('keydown', function(e){
  if(e.keyCode == 32){
-  camera.position.set(camera.position.x, camera.position.y + 1/100, camera.position.z);
- balloon.position.set(balloon.position.x, balloon.position.y + 1/100, balloon.position.z);
+ move = 1;
  }
  if(e.keyCode == 16){
-  camera.position.set(camera.position.x, camera.position.y - 1/100, camera.position.z);
- balloon.position.set(balloon.position.x, balloon.position.y - 1/100, balloon.position.z);
+ move = -1;
  }
+});
+document.body.addEventListener('keyup', function(e){
+ move = 0;
 });
 });
