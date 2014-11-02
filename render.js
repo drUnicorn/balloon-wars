@@ -7,7 +7,7 @@ Physijs.scripts.ammo = window.location+'lib/ammo.js';
 
 var initScene, render, createShape, NoiseGen,
  renderer, scene, light, camera, shape, balloon;
-
+var move = 0;
 initScene = function() {
  
  //TWEEN je pro plynulé animace
@@ -45,11 +45,11 @@ initScene = function() {
   1,
   1000
  );
- camera.position.set( -458133.9720997899, 243, 5548777.776496544 );
+ camera.position.set( -458133.9720997899, 261, 5548777.776496544 );
  camera.rotation.set( 3.787364476827695, -4.2062434973063345, 3.141592653589793 );
  scene.add( camera );
  
- 
+    
  //Osvětli scénu
  light = new THREE.DirectionalLight( 0xFFFFFF );
  light.position.set( 20, 40, -15 );
@@ -104,12 +104,9 @@ initScene = function() {
    261,                //nadmořská výška
    5548777.776496544   //UTM délka
   );
+    
   
-  
-  
-  
-  
-  scene.add( balloon );
+  scene.add( balloon );     
  });
 };
 
@@ -117,11 +114,14 @@ initScene = function() {
 //Synchronizuj kameru mapy a THREE.js
 render = function() {
  requestAnimationFrame( render );
+ balloon.position.set(balloon.position.x, balloon.position.y + move, balloon.position.z);
+ camera.position.set(balloon.position.x, balloon.position.y, balloon.position.z);
  renderer.render( scene, camera );
  if(browser&&browser.getPosition()[0]){
   browser.cameraCopyFrom( camera );
- }
- 
+ }                              
+  
+   
 };
 
 window.addEventListener('load',initScene);
