@@ -57,10 +57,26 @@ document.addEventListener('mousemove',function(e){
 
 document.body.addEventListener('keydown', function(e){
  if(e.keyCode == 32){
- move = 1;
+  move = 1;
  }
  if(e.keyCode == 16){
- move = -1;
+  move = -1;
+ }
+ if(e.keyCode == 45){
+  alert("Bazinga!!!");
+  var geo = new THREE.SphereGeometry(5);
+  var material = Physijs.createMaterial(
+        new THREE.MeshLambertMaterial({ opacity: 1, transparent: false }),
+        .6, //stredni treni
+        .3  //nizke odskodneni
+  );
+  
+  material.color.setRGB(255,255,0);
+  
+  var sphere = Physijs.SphereMesh(geo, material);
+  
+  sphere.position.set(camera.position.x, camera.position.y, camera.position.z + 10);
+  scene.add(sphere);
  }
 });
 document.body.addEventListener('keyup', function(e){
