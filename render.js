@@ -1,14 +1,19 @@
 
+// TODO split this file into:
+// render.js
+// physics.js
+// init.js
 
 Physijs.scripts.worker = window.location+'lib/physijs_worker.js';
 Physijs.scripts.ammo = window.location+'lib/ammo.js';
 
 
 
-var initScene, render, createShape, NoiseGen,
- renderer, scene, light, camera, shape, balloon;
-var move = 0;
-initScene = function() {
+var  render, renderer, scene, camera, balloon;
+
+var move = 0; //FIXME move to user.js
+
+function initScene() {
  
  //TWEEN je pro plynulé animace
  TWEEN.start();
@@ -20,12 +25,19 @@ initScene = function() {
  renderer.shadowMapSoft = true;
  document.getElementById( 'canvas' ).appendChild( renderer.domElement );
  
+ 
  window.addEventListener('resize',function(){
-  renderer.setSize(
-   document.body.clientWidth,
-   document.body.clientHeight
-  );
+   
+   camera.aspect = window.innerWidth / window.innerHeight;
+   camera.updateProjectionMatrix();
+   
+   renderer.setSize(
+    document.body.clientWidth,
+    document.body.clientHeight
+   );
+   
  });
+ 
  
  //Vytvoř scénu
  scene = new Physijs.Scene({ fixedTimeStep: 1 / 120 });
@@ -49,9 +61,9 @@ initScene = function() {
  camera.rotation.set( 3, -4.2062434973063345, 3.141592653589793 );
  scene.add( camera );
  
-    
+ 
  //Osvětli scénu
- light = new THREE.DirectionalLight( 0xFFFFFF );
+ var light = new THREE.DirectionalLight( 0xFFFFFF );
  light.position.set( 20, 40, -15 );
  light.target.position.copy( scene.position );
  light.castShadow = true;
@@ -104,9 +116,9 @@ initScene = function() {
    261,                //nadmořská výška
    5548777.776496544   //UTM délka
   );
-    
   
-  scene.add( balloon );     
+  
+  scene.add( balloon );
  });
 };
 
@@ -139,8 +151,8 @@ render = function() {
  if(browser&&browser.getPosition()[0]){
   browser.cameraCopyFrom( camera );
  }
-  
-   
+ 
+ 
 };
 
 window.addEventListener('load',initScene);

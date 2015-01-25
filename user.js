@@ -20,11 +20,6 @@ document.body.requestPointerLock =
  
 document.body.requestPointerLock();
 
-var lim = function(n, min, max){
- return n<min ? min : ( n>max ? max : n );
-};
-
-var factor = 1/100;
 var prevX, prevY;
 document.addEventListener('mousemove',function(e){
  
@@ -44,15 +39,6 @@ document.addEventListener('mousemove',function(e){
   
   mouseX += Δx;
   mouseY += Δy;
-  
-  var min = Math.PI/2;
-  var max = Math.PI+min;
-  
-  if(balloon){
-    
-    //camera.lookAt(balloon);
-    
-  }
   
  }
  
@@ -89,4 +75,5 @@ document.body.addEventListener('keydown', function(e){
 document.body.addEventListener('keyup', function(e){
  move = 0;
 });
+
 });
