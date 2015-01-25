@@ -1,3 +1,6 @@
+
+var mouseX = 0, mouseY = 0;
+
 window.addEventListener('load',function(){
 document.body.addEventListener('click', function(){
 
@@ -39,14 +42,18 @@ document.addEventListener('mousemove',function(e){
   Δx = Δx|0||0;
   Δy = Δy|0||0;
   
+  mouseX += Δx;
+  mouseY += Δy;
+  
   var min = Math.PI/2;
   var max = Math.PI+min;
   
-  camera.rotation.set(
-   lim( camera.rotation.x + factor * Δy, min, max ), //Yaw
-   camera.rotation.y + factor * Δx,                  //Pitch
-   camera.rotation.z //Roll - buggy, ¡no toques!
-  );
+  if(balloon){
+    
+    //camera.lookAt(balloon);
+    
+  }
+  
  }
  
  prevX = e.clientX;
