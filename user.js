@@ -20,6 +20,11 @@ document.body.requestPointerLock =
  
 document.body.requestPointerLock();
 
+var lim = function(n, min, max){
+ return n<min ? min : ( n>max ? max : n );
+};
+
+var factor = 1/100;
 var prevX, prevY;
 document.addEventListener('mousemove',function(e){
  
@@ -40,6 +45,14 @@ document.addEventListener('mousemove',function(e){
   mouseX += Δx;
   mouseY += Δy;
   
+  var min = Math.PI/2;
+  var max = Math.PI+min;
+  
+  camera.rotation.set(
+   lim( camera.rotation.x + factor * Δy, min, max ), //Yaw
+   camera.rotation.y + factor * Δx,                  //Pitch
+   camera.rotation.z //Roll - buggy, ¡no toques!
+  );
  }
  
  prevX = e.clientX;
@@ -56,20 +69,14 @@ document.body.addEventListener('keydown', function(e){
   move = -1;
  }
  if(e.keyCode == 45){
-  alert("Bazinga!!!");
-  var geo = new THREE.SphereGeometry(5);
-  var material = Physijs.createMaterial(
-        new THREE.MeshLambertMaterial({ opacity: 1, transparent: false }),
-        .6, //stredni treni
-        .3  //nizke odskodneni
-  );
+  var geo = new THREE.SphereGeometry(1, 20, 20);
+  var material = new THREE.MeshLambertMaterial( {color: 'blue'} );
   
-  material.color.setRGB(255,255,0);
+  var sphere = new THREE.Mesh(geo, material);
   
-  var sphere = Physijs.SphereMesh(geo, material);
-  
-  sphere.position.set(camera.position.x, camera.position.y, camera.position.z + 10);
+  sphere.position.set(camera.position.x + Math.sin(camera.rotation.y)*5, camera.position.y + Math.sin(camera.rotation.x)*5, camera.position.z + Math.cos(camera.rotation.y)*5);
   scene.add(sphere);
+  setInterval(function(){sphere.position.set(sphere.position.x + Math.sin(camera.rotation.y)*5, sphere.position.y + Math.sin(camera.rotation.x)*5, sphere.position.z + Math.cos(camera.rotation.y)*5)}, 1000);
  }
 });
 document.body.addEventListener('keyup', function(e){

@@ -58,7 +58,7 @@ function initScene() {
   1000
  );
  camera.position.set( -458133.9720997899, 261, 5548777.776496544 );
- camera.rotation.set( 3, -4.2062434973063345, 3.141592653589793 );
+ camera.rotation.set( 3.141592653589793, 0, 3.141592653589793 );
  scene.add( camera );
  
  
@@ -127,9 +127,6 @@ function initScene() {
 render = function(now) {
  requestAnimationFrame( render );
  if( !balloon ){ return; }
- 
- balloon.position.set(balloon.position.x, balloon.position.y + move, balloon.position.z);
- 
  
  var radius = 50;
  
