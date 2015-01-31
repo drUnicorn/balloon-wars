@@ -124,7 +124,7 @@ function initScene() {
 
 
 //Synchronizuj kameru mapy a THREE.js
-render = function() {
+render = function(now) {
  requestAnimationFrame( render );
  if( !balloon ){ return; }
  
