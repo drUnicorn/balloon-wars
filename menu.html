@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Balloon Wars</title>
+		<style>
+			@font-face { font-family: Steampunk; src: url('fonts/JFRingmaster.ttf'); }
+			
+			b {
+				font-family: Steampunk;
+				font-size: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<b>Balloon Wars</b>
+		<ul>
+			<li><a id="l1" onclick="transfer('index.html');">Weigh anchors!</a></li>
+			<li><a id="l2" onclick="transfer('upgrades');">Take the booty, fix the hull!</a></li>
+			<li><a id="l3" onclick="transfer('community');">Glass o'grog with mateys</a></li>
+			<li><a id="l4" onclick="transfer('authors.html');">Bilge rats</a></li>
+		</ul>
+		
+		<i><a id="p" onclick="pirateToggle();">Pirate-less version</a></i>
+		<script>
+			function transfer(a) {
+				window.location.href = a;
+			}
+			
+			function pirateToggle() {
+				if( document.getElementById("p").innerHTML == "Pirate version" )
+				{
+					document.getElementById("l1").innerHTML = "Weigh anchors!";
+					document.getElementById("l2").innerHTML = "Take the booty, fix the hull!";
+					document.getElementById("l3").innerHTML = "Glass o'grog with mateys";
+					document.getElementById("l4").innerHTML = "Bilge rats";
+					document.getElementById("p").innerHTML  = "Pirate-less version";
+				}
+				else
+				{
+					document.getElementById("l1").innerHTML = "Jump right in!";
+					document.getElementById("l2").innerHTML = "Ship upgrades";
+					document.getElementById("l3").innerHTML = "Community content";
+					document.getElementById("l4").innerHTML = "Authors";
+					document.getElementById("p").innerHTML  = "Pirate version";
+				}
+			}
+		</script>
+	</body>
+</html>
