@@ -6,7 +6,7 @@ function log(){
   if(+debug){ console.log.apply(console,arguments); };
 };
 
-function namegen(){ var name = [ "Joe", "Foo", "XXX_Iluminati_XXX", "Noscoper", "YoMama", "TheMe", "Aye", "DuckDuck", "NeedMoreMana", "UWotM8", "Shaddap" ]; name = name[ (Math.random()*name.length)|0 ]; name += "_"+( Math.random()*50 |0 ); return name; }
+function namegen(){ var first = [ "Joe", "Foo", "Iluminati", "YoMama", "Aye", "DuckDuck", "NeedMoreMana", "UWotM8", "Shaddap" ]; var second = ["TheNoscoper", "BlazeIt", "TheMe", "TheGoatRemix", "WereNotKill", "Bar", "ThePinguin"]; return first[ (Math.random()*first.length)|0 ] + second[ (Math.random()*second.length)|0 ]; }
 
 var online = false;
 var players = [];
@@ -65,41 +65,181 @@ function Mate(a){
   
   
   //shared data arrays
-  self.own  = [];
-  self.loan = [];
+  var own  = [];
+  var loan = [];
   
-  //remember former values
-  var owned  = [];
-  var loaned = [];
+  var observers = Map();
+  var changes = []; //changes storage
+  self.ch = changes;
   
-  function give(){ //TODO
-    var info = {};
-    info.move = [];
-    info.new = [];
+  //set up object observing
+  //str arg is a path to observed object
+  //eg. "own.0.position"
+  function observe(str){
     
+    //parse the path
+    str = str+"";
+    var path = str.split('.');
+    var obj = own;
     var i = -1;
-    while(++i<own.length || i<owned.length){
-      if(own[i] !== owned[i]){
-        var x = owned.indexOf(own[i]);
-        if(x+1){
-          if( own[x] == owned[x] ){
-            info.new[i] = own[i];
-          }else{
-            info.move[i] = x;
-          }
-        }else{
-          info.new[i] = own[i];
-        }
-      }
+    while(++i<path.length){
+      if(path[i]===""){ continue; }
+      obj = obj[path[i]];
     }
     
-    owned = Array.from(own);
+    //create the observer function
+    var observer = function(chs){
+      
+      for(chn in chs){
+        
+        var ch = chs[chn];
+        
+        //this type of changes is not transmitted
+        if(ch.type=="preventExtensions"
+         ||ch.type=="reconfigure"
+         ||ch.type=="setPrototype"){ return; }
+        
+        //unobserve a removed object
+        if(isObj(ch.oldValue)){
+          unobserve(str+"."+ch.name);
+        }
+        
+        var ref = changes; //reflection object
+        
+        //parse the path
+        var i = -1;
+        while(++i<path.length){
+          var bit = path[i]; //temp store
+          if(bit===""){ continue; }
+          ref[bit] = ref[bit]||{}; //if !exists then create
+          ref = ref[bit];
+        }
+        
+        if(!isObj(obj[ch.name])){
+          ref[ch.name] = obj[ch.name]; //copy primitive
+        }else{
+          if(ch.type=="add"
+           ||ch.type=="update")
+          {
+            //clone object
+            ref[ch.name] = clone(
+              str+"."+ch.name,
+              obj[ch.name]
+            );
+            
+            observe(str+"."+ch.name); //observe object
+          }
+          
+        }
+      }
+    };
     
-    return info;
+    //store the observer for later unobservation
+    observers.set(str,observer);
+    
+    //begin observing
+    Object.observe(obj,observer);
+    
   };
   
-  function take(info){
-    //TODO
+  
+  //a helper function
+  function isObj( value ){
+    
+    return typeof value === "object" && value !== null;
+    
+  };
+  
+  
+  //clone object and observe sub-objects
+  function clone(str,obj){
+    
+    var ref = {};
+    
+    var keys = Object.keys(obj);
+    var i=-1;
+    while(++i<keys.length){ //for all keys
+      
+      var key = keys[i];
+      if(!isObj(typeof obj[key])){ //copy primitive
+        ref[key] = obj[key];
+      }else{
+        ref[key] = clone(str+"."+key,obj[key]); //clone...
+        observe(str+"."+key); //...and observe
+      }
+      
+    }
+    
+    return ref;
+    
+  };
+  
+  
+  function unobserve(str){
+    
+    //parse the path
+    str = str+"";
+    var path = str.split('.');
+    var obj = own;
+    var i = -1;
+    while(++i<path.length){
+      if(path[i]===""){ continue; }
+      obj = obj[path[i]];
+    }
+    
+    //unobserve
+    Object.unobserve(
+      obj, observers.get(str)
+    );
+    
+    //remove from register
+    observers.delete(str);
+    
+  };
+  
+  
+  function update(source, destination){
+    
+    var keys = Object.keys(source);
+    for(var i in keys){
+      
+      var key = keys[i];
+      
+      if(!isObj(source[key])){
+        destination[key] = source[key];
+      }else{
+        typeof isObj(destination[key])||
+               (destination[key] = {});
+        
+        update(source[key],destination[key]);
+      }
+      
+    }
+    
+  };
+  
+  
+  observe(''); //start observing the "own"
+  
+  
+  self.shareObject = function( obj ){
+    own.push(obj);
+  };
+  
+  self.unshareObject = function( obj ){
+    var i = own.indexOf(obj);
+    if(i>=0){ own[i] = undefined; }
+  }
+  
+  self.objects = loan;
+  
+  
+  function give(){
+    return changes.splice(0,Infinity);
+  };
+  
+  function take(data){
+    update(data.update, loan);
   };
   
   
@@ -114,8 +254,7 @@ function Mate(a){
     then = Date.now(); //store now for next beat
     
     //share local changes
-    var data = give();
-    data.thread = thread;
+    var data = {update:give(),thread:thread};
     self.connection.send(data);
   };
   
@@ -123,18 +262,18 @@ function Mate(a){
   self.connection.on('data',function(data){
     log('Peer: Message: '+data.toSource());
     
-    take(data); //update local data
-    
     if(data.thread > thread){ //in case of my arrhythmia
       thread = data.thread; //accept new hearthbeat
     }
     if(data.thread == thread){ //if no arrhythmia
       hb(); //continue in hearthbeat
     }
+    
+    take(data); //update local data
   });
   
   setInterval(function(){
-    
+    return;
     //check arrhythmia
     if(Date.now() - then > 200){ //max ping 200ms
       thread++; //start a new thread
