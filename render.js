@@ -128,19 +128,24 @@ render = function(now) {
  requestAnimationFrame( render );
  if( !balloon ){ return; }
  
- var radius = 50;
+ var radius = 50; 
+ var min = - Math.PI/2 + 1/2;
+ var max = Math.PI/2 - 1/2;
+ var lim = function(n, min, max){
+  return n<min ? min : ( n>max ? max : n );
+ };
  
  camera.position.x
    = (balloon.position.x||0)
-   + radius * Math.sin( mouseX/100 );
+   + radius * Math.cos( lim( mouseY/100, min, max) ) * Math.sin( mouseX/100 );
  
  camera.position.z
    = (balloon.position.z||0)
-   + radius * Math.cos( mouseX/100 );
+   + radius * Math.cos( lim( mouseY/100, min, max) ) * Math.cos( mouseX/100 );
  
  camera.position.y
    = (balloon.position.y||0)
-   + 10;
+   + radius * Math.sin( lim( mouseY/100, min, max) );
  
  camera.rotation.y = (mouseX/100+Math.PI)%(2*Math.PI);
  
