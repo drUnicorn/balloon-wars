@@ -6,6 +6,13 @@ function log(){
   if(+debug){ console.log.apply(console,arguments); };
 };
 
+function assert(x){
+  if(!x){
+    throw "Assert error!";
+    debugger;
+  }
+};
+
 function namegen(){ var first = [ "Joe", "Foo", "Iluminati", "YoMama", "Aye", "DuckDuck", "NeedMoreMana", "UWotM8", "Shaddap" ]; var second = ["TheNoscoper", "BlazeIt", "TheMe", "TheGoatRemix", "WereNotKill", "Bar", "ThePinguin"]; return first[ (Math.random()*first.length)|0 ] + second[ (Math.random()*second.length)|0 ]; }
 
 var online = false;
@@ -207,9 +214,12 @@ function Mate(a){
       
       if(!isObj(source[key])){
         destination[key] = source[key];
+        console.log("update key set", keys[i]);
       }else{
-        typeof isObj(destination[key])||
-               (destination[key] = {});
+        isObj(destination[key])||
+        (destination[key] = {});
+        
+        assert( typeof destination[key] === "object" );
         
         update(source[key],destination[key]);
       }
@@ -239,6 +249,8 @@ function Mate(a){
   };
   
   function take(data){
+    //TODO cyclic references
+    //TODO object types (eg. arrays)
     update(data.update, loan);
   };
   
