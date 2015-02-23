@@ -42,11 +42,11 @@ document.addEventListener('mousemove',function(e){
   Δx = Δx|0||0;
   Δy = Δy|0||0;
   
-  mouseX += Δx;
-  mouseY += Δy;
+  var min = (Math.PI/2);
+  var max = (3*Math.PI/2);
   
-  var min = Math.PI/2;
-  var max = Math.PI+min;
+  mouseX += Δx;
+  mouseY = lim( (mouseY + Δy), -(Math.PI*50), (Math.PI*50) );
   
   camera.rotation.set(
    lim( camera.rotation.x + factor * Δy, min, max ), //Yaw

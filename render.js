@@ -91,7 +91,7 @@ function initScene() {
   
   var material = new THREE.MeshLambertMaterial({ opacity: 1, transparent: true });
   
-  balloon = new THREE.Mesh(
+  balloon = new Physijs.ConvexMesh(
     geometry,
     material
   );
@@ -129,25 +129,21 @@ render = function(now) {
  if( !balloon ){ return; }
  
  var radius = 50; 
- var min = - Math.PI/2 + 1/2;
- var max = Math.PI/2 - 1/2;
- var lim = function(n, min, max){
-  return n<min ? min : ( n>max ? max : n );
- };
  
  camera.position.x
    = (balloon.position.x||0)
-   + radius * Math.cos( lim( mouseY/100, min, max) ) * Math.sin( mouseX/100 );
+   + radius * Math.cos(mouseY/100) * Math.sin( mouseX/100 );
  
  camera.position.z
    = (balloon.position.z||0)
-   + radius * Math.cos( lim( mouseY/100, min, max) ) * Math.cos( mouseX/100 );
+   + radius * Math.cos(mouseY/100) * Math.cos( mouseX/100 );
  
  camera.position.y
    = (balloon.position.y||0)
-   + radius * Math.sin( lim( mouseY/100, min, max) );
+   + radius * Math.sin(mouseY/100);
  
  camera.rotation.y = (mouseX/100+Math.PI)%(2*Math.PI);
+ camera.rotation.x = (mouseY/100+Math.PI)%(2*Math.PI);
  
  renderer.render( scene, camera );
  if(browser&&browser.getPosition()[0]){
