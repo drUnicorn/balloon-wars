@@ -1,47 +1,50 @@
 <!doctype html>
-<html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8" />
 		<title>Balloon Wars</title>
-		<style>
-			@font-face { font-family: Steampunk; src: url('fonts/JFRingmaster.ttf'); }
-			
-			b {
-				font-family: Steampunk;
-				font-size: 20px;
-			}
-		</style>
+		<link rel="stylesheet" href="style.css">
 	</head>
 
 	<body>
-		<b>Balloon Wars</b>
-		<ul>
-			<li><a id="l1" onclick="transfer('index.html');">Weigh anchors!</a></li>
-			<li><a id="l2" onclick="transfer('upgrades');">Take the booty, fix the hull!</a></li>
-			<li><a id="l3" onclick="transfer('community');">Glass o'grog with mateys</a></li>
-			<li><a id="l4" onclick="transfer('authors.html');">Bilge rats</a></li>
-		</ul>
-		
-		<i><a id="p" onclick="pirateToggle();">Pirate-less version</a></i>
+		<div id="container">
+			<h1>Balloon Wars</h1>
+			<ul>
+				<div id="leftside">
+					<li><a id="l1" onclick="transfer('index.html');">weigh anchors!</a></li>
+				</div>
+				<div id="rightside">
+					<li><a id="l2" onclick="transfer('upgrades');">take the booty, fix the hull!</a></li>
+					<li><a id="l3" onclick="transfer('community');">glass o'grog with mateys</a></li>
+					<li><a id="l4" onclick="transfer('authors.html');">bilge rats</a></li>
+				</div>
+			</ul>
+			<div id="footer">
+				<i><a id="p" onclick="pirateToggle();">Pirate-less version</a></i>
+				<br />
+				<p>copyright &copy; 2015 m93a</p>
+			</div>
+		</div>
 		<script>
 			function transfer(a) {
 				window.location.href = a;
 			}
-			
+				
 			function pirateToggle() {
-				if( document.getElementById("p").innerHTML == "Pirate version" )
+					if( document.getElementById("p").innerHTML == "Pirate version" )
 				{
-					document.getElementById("l1").innerHTML = "Weigh anchors!";
-					document.getElementById("l2").innerHTML = "Take the booty, fix the hull!";
-					document.getElementById("l3").innerHTML = "Glass o'grog with mateys";
-					document.getElementById("l4").innerHTML = "Bilge rats";
+					document.getElementById("l1").innerHTML = "weigh anchors!";
+					document.getElementById("l2").innerHTML = "take the booty, fix the hull!";
+					document.getElementById("l3").innerHTML = "glass o'grog with mateys";
+					document.getElementById("l4").innerHTML = "bilge rats";
 					document.getElementById("p").innerHTML  = "Pirate-less version";
 				}
 				else
 				{
-					document.getElementById("l1").innerHTML = "Jump right in!";
-					document.getElementById("l2").innerHTML = "Ship upgrades";
-					document.getElementById("l3").innerHTML = "Community content";
-					document.getElementById("l4").innerHTML = "Authors";
+					document.getElementById("l1").innerHTML = "jump right in!";
+					document.getElementById("l2").innerHTML = "ship upgrades";
+					document.getElementById("l3").innerHTML = "community content";
+					document.getElementById("l4").innerHTML = "authors";
 					document.getElementById("p").innerHTML  = "Pirate version";
 				}
 			}
