@@ -91,10 +91,12 @@ function initScene() {
   
   var material = new THREE.MeshLambertMaterial({ opacity: 1, transparent: true });
   
-  balloon = new Physijs.ConvexMesh(
+  balloon = new Physijs.ConcaveMesh(
     geometry,
     material
   );
+  
+  balloon.mass = 150; //TODO move to separate file
   
   
   //Náhodně vyber barvu
@@ -106,9 +108,6 @@ function initScene() {
   
   balloon.castShadow = true;    //Balón vytváří stín
   balloon.receiveShadow = true; //A může na něj dopadat stín
-  
-  //Skutečný balón je o trochu větší, než model...
-  balloon.scale.x = balloon.scale.y = balloon.scale.z = 5;
   
   //Nastav pozici
   balloon.position.set(

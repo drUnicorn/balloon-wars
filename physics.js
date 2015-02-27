@@ -7,11 +7,11 @@
   var then = Date.now();
   
   
+  var pressure = 101325;
+  var temp = 25 +273.15;
+  
   render = function(now){
     var delta = (now - then)/1000; //compute delta time
-    
-    var pressure = 101325;
-    var temp = 25 +273.15;
     
     //http://en.wikipedia.org/wiki/Hot_air_balloon#Generating_lift
     if(balloon){

@@ -62,25 +62,33 @@ document.addEventListener('mousemove',function(e){
 });
 
 document.body.addEventListener('keydown', function(e){
- if(e.keyCode == 32){
+ if(e.keyCode == 32){ //space
   balloon.temp += 5;
  }
- if(e.keyCode == 16){
+ if(e.keyCode == 16){ //lshift
   balloon.temp -= 5;
  }
- if(e.keyCode == 45){
+ if(e.keyCode == 45){ //insert
   var geo = new THREE.SphereGeometry(1, 20, 20);
   var material = new THREE.MeshLambertMaterial( {color: 'blue'} );
   
   var sphere = new Physijs.SphereMesh(geo, material);
   
-  sphere.position.set(camera.position.x + Math.sin(camera.rotation.y)*5, camera.position.y + Math.sin(camera.rotation.x)*5, camera.position.z + Math.cos(camera.rotation.y)*5);
+  sphere.position.set(
+    balloon.position.x + Math.sin(camera.rotation.y)*50,
+    balloon.position.y + Math.sin(camera.rotation.x)*50,
+    balloon.position.z + Math.cos(camera.rotation.y)*50
+  );
+  
   scene.add(sphere);
-  setInterval(function(){sphere.position.set(sphere.position.x + Math.sin(camera.rotation.y)*5, sphere.position.y + Math.sin(camera.rotation.x)*5, sphere.position.z + Math.cos(camera.rotation.y)*5)}, 1000);
+  
+  sphere.setLinearVelocity( new THREE.Vector3(
+    Math.sin(camera.rotation.y),
+    Math.sin(camera.rotation.x),
+    Math.cos(camera.rotation.y)
+  ).multiplyScalar(100) );
+  
  }
-});
-document.body.addEventListener('keyup', function(e){
- move = 0;
 });
 
 });
