@@ -63,10 +63,10 @@ document.addEventListener('mousemove',function(e){
 
 document.body.addEventListener('keydown', function(e){
  if(e.keyCode == 32){
-  move = 1;
+  balloon.temp += 5;
  }
  if(e.keyCode == 16){
-  move = -1;
+  balloon.temp -= 5;
  }
  if(e.keyCode == 45){
   var geo = new THREE.SphereGeometry(1, 20, 20);
