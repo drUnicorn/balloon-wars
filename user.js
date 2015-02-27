@@ -72,7 +72,7 @@ document.body.addEventListener('keydown', function(e){
   var geo = new THREE.SphereGeometry(1, 20, 20);
   var material = new THREE.MeshLambertMaterial( {color: 'blue'} );
   
-  var sphere = new THREE.Mesh(geo, material);
+  var sphere = new Physijs.SphereMesh(geo, material);
   
   sphere.position.set(camera.position.x + Math.sin(camera.rotation.y)*5, camera.position.y + Math.sin(camera.rotation.x)*5, camera.position.z + Math.cos(camera.rotation.y)*5);
   scene.add(sphere);
