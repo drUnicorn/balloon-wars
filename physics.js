@@ -37,15 +37,17 @@
         /( 287.058 * temp * balloon.temp * balloon.mass )
       -1);
       
-      balloon.vy += balloon.ay*delta;
-      if(balloon.vy > 100){
-        balloon.vy = 100;
+      var velocity = balloon.getLinearVelocity();
+      
+      velocity.y += balloon.ay*delta;
+      if(velocity.y > 100){
+        velocity.y = 100;
       }
-      if(balloon.vy < -100){
-        balloon.vy = -100;
+      if(velocity.y < -100){
+        velocity.y = -100;
       }
       
-      balloon.position.y += balloon.vy*delta;
+      balloon.setLinearVelocity( velocity );
       
     }
     
