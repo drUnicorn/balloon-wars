@@ -144,6 +144,13 @@ render = function(now) {
  camera.rotation.y = (mouseX/100+Math.PI)%(2*Math.PI);
  camera.rotation.x = (mouseY/100+Math.PI)%(2*Math.PI);
  
+ if(pitch == true){
+  balloon.temp += 5;
+ }
+ if(descent == true){
+  balloon.temp -= 5;
+ }
+ 
  renderer.render( scene, camera );
  if(browser&&browser.getPosition()[0]){
   browser.cameraCopyFrom( camera );

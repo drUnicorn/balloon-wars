@@ -1,5 +1,5 @@
 
-var mouseX = 0, mouseY = 0;
+var mouseX = 0, mouseY = 0, pitch = false, descent = false;
 
 window.addEventListener('load',function(){
 document.body.addEventListener('click', function(){
@@ -61,16 +61,27 @@ document.addEventListener('mousemove',function(e){
 
 });
 
+
 document.body.addEventListener('keydown', function(e){
  if(e.keyCode == 32){ //space
-  balloon.temp += 5;
+  pitch = true;
+  descent = false;
  }
  if(e.keyCode == 16){ //lshift
-  balloon.temp -= 5;
+  pitch = false;
+  descent = true;
  }
  if(e.keyCode == 45){ //insert
   var geo = new THREE.SphereGeometry(1, 20, 20);
   var material = new THREE.MeshLambertMaterial( {color: 'blue'} );
+
+document.body.addEventListener('keydown', function(e){
+ if(e.keyCode == 32){ //space
+  pitch = false;
+ }
+ if(e.keyCode == 16){ //lshift
+  descent = false;
+ }});
   
   var sphere = new Physijs.SphereMesh(geo, material);
   
