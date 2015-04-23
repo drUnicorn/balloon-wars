@@ -2,9 +2,9 @@
  "defaultPosition" :[542432, 5619232, 400],
  "defaultOrientation" :[0, -40, 0], 
  "foat" :[0, -3700000, 1300000, 8388608],
- "meshTemplate" :"index.php?u=http://mapserver.mapy.cz/3d/{lod}-{easting}-{northing}.bin",
+ "meshTemplate" :"index.php?u=http://m1.mapserver.mapy.cz/3d/{lod}-{easting}-{northing}.bin",
  "meta" :[15, 4],
- "metaTemplate" :"index.php?u=http://mapserver.mapy.cz/3d/{lod}-{easting}-{northing}.meta",
+ "metaTemplate" :"index.php?u=http://m1.mapserver.mapy.cz/3d/{lod}-{easting}-{northing}.meta",
  "textureTemplate" :"index.php?u=http://mapserver.mapy.cz/3d/{lod}-{easting}-{northing}.jpg"
 }
 
